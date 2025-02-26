@@ -1,10 +1,8 @@
 package com.project.expenseTracker.handler;
 
 import com.project.expenseTracker.dto.ErrorResponseDto;
-import com.project.expenseTracker.exceptions.InvalidCredentialsException;
-import com.project.expenseTracker.exceptions.InvalidTokenException;
-import com.project.expenseTracker.exceptions.UserAlreadyExistsException;
-import com.project.expenseTracker.exceptions.UserNotFoundException;
+import com.project.expenseTracker.exceptions.*;
+import com.project.expenseTracker.exceptions.category.ExpCatAlreadyExistsException;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +54,30 @@ public class GlobalExceptionHandler {
     ResponseEntity<ErrorResponseDto> handleInvalidTokenException(InvalidTokenException e) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
+                .body(
+                        ErrorResponseDto.builder()
+                                .errorCode(e.getErrorCode())
+                                .errorMessage(e.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(ExpCatAlreadyExistsException.class)
+    ResponseEntity<ErrorResponseDto> handleExpCatAlreadyExistsException(ExpCatAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(
+                        ErrorResponseDto.builder()
+                                .errorCode(e.getErrorCode())
+                                .errorMessage(e.getMessage())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    ResponseEntity<ErrorResponseDto> DataNotFoundException(DataNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(
                         ErrorResponseDto.builder()
                                 .errorCode(e.getErrorCode())
