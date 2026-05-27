@@ -28,21 +28,21 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/byUserId/{userId}")
-    public ResponseEntity<UserInfo> getUserInfo(@PathVariable String userId){
-        User user=userService.getUserByUserId(userId);
+    @GetMapping("/byUserName/{userName}")
+    public ResponseEntity<UserInfo> getUserInfo(@PathVariable String userName) {
+        User user=userService.getUserByUserName(userName);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(UserInfo.builder()
-                        .userId(user.getUserId())
+                        .userName(user.getUsername())
                         .email(user.getEmail())
                         .build());
     }
 
-    @PostMapping("/changePassword/{userId}")
+    @PostMapping("/changePassword/{userName}")
     public ResponseEntity<Void> changePass(@RequestBody ChangePassReq changePassReq,
-                                       @PathVariable String userId){
-        userService.changePassword(userId,changePassReq);
+                                       @PathVariable String userName){
+        userService.changePassword(userName,changePassReq);
         return ResponseEntity
                 .ok().build();
     }

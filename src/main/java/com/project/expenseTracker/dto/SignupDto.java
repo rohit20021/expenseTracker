@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SignupDto {
-    String userId;
+    String userName;
     String email;
     String password;
 

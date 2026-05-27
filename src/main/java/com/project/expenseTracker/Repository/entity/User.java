@@ -21,10 +21,14 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @Builder.Default
     private String userId= UUID.randomUUID().toString();;
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false,unique = true)
+    private String username;
 
     @Column(nullable = false)
     private String passwordHash;
@@ -35,6 +39,5 @@ public class User {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Expense> expenses;
+
 }

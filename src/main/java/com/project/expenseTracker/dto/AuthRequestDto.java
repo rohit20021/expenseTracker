@@ -9,9 +9,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 public class AuthRequestDto {
-    String userId;
     String name;
     String email;
     String password;
     String accessType;
+    String userName;
 }
