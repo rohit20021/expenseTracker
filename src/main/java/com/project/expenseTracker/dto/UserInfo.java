@@ -10,6 +10,6 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserInfo {
-    String userId;
+    String userName;
     String email;
 }

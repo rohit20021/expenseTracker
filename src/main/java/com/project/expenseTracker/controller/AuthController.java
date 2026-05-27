@@ -1,9 +1,6 @@
 package com.project.expenseTracker.controller;
 
-import com.project.expenseTracker.dto.AuthRequestDto;
-import com.project.expenseTracker.dto.AuthResponseDto;
-import com.project.expenseTracker.dto.VerifyTokenRequestDto;
-import com.project.expenseTracker.dto.VerifyTokenResponseDto;
+import com.project.expenseTracker.dto.*;
 import com.project.expenseTracker.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/logIn")
-    public ResponseEntity<AuthResponseDto> logIn(@RequestBody AuthRequestDto userDetails){
+    public ResponseEntity<AuthResponseDto> logIn(@RequestBody LogInDto userDetails){
         var accessToken=authService.logIn(userDetails);
 
         return ResponseEntity

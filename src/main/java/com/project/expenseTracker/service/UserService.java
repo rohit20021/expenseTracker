@@ -19,18 +19,17 @@ public class UserService {
     private UserRepository userRepository;
 
     public ResponseEntity<String> saveUser(SignupDto userDetails) {
-            // Validate userId
-            if (userDetails.getUserId() == null || userDetails.getUserId().isEmpty()) {
-                return ResponseEntity.badRequest().body("User ID cannot be null or empty");
+            // Validate userName
+            if (userDetails.getUserName() == null || userDetails.getUserName().isEmpty() || userDetails.getEmail() == null || userDetails.getEmail().isEmpty()) {
+                return ResponseEntity.badRequest().body("User name  or email cannot be null or empty");
             }
 
             userRepository.findByEmail(userDetails.getEmail()).ifPresent(existingUser -> {
                 throw new UserAlreadyExistsException("User already exists", "e409");
             });
-
         // Create User entity
             User user = User.builder()
-                    .userId(userDetails.getUserId())
+                    .username(userDetails.getUserName())
                     .email(userDetails.getEmail())
                     .passwordHash(userDetails.getPassword())
                     .createdAt(LocalDateTime.now())
@@ -44,19 +43,17 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(()->{
-            return new UserNotFoundException("user not found","e404");
-        });
+        return userRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException("user not found","e404"));
     }
 
-    public User getUserByUserId(String userId) {
-        return userRepository.findByUserId(userId).orElseThrow(() -> {
+    public User getUserByUserName(String userName) {
+        return userRepository.findByUsername(userName).orElseThrow(() -> {
             return new UserNotFoundException("user not found", "e404");
         });
     }
 
-    public void changePassword(String userId, ChangePassReq changePassReq) {
-        User user = getUserByUserId(userId);
+    public void changePassword(String userName, ChangePassReq changePassReq) {
+        User user = getUserByUserName(userName);
         if(!user.getPasswordHash().equals(changePassReq.getOldPass())){
             throw new BadCredentialsException("Forbidden");
         }

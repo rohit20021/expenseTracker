@@ -31,7 +31,7 @@ public class AuthService {
         SignupDto signUpDetails = SignupDto.builder()
                 .email(userDetails.getEmail())
                 .password(userDetails.getPassword())
-                .userId(userDetails.getUserId())
+                .userName(userDetails.getUserName())
                 .build();
 
         var accessToken="";
@@ -46,21 +46,17 @@ public class AuthService {
     }
 
     @Transactional
-    public String logIn(AuthRequestDto userDetails){
-        LogInDto logInDetails = LogInDto.builder()
-                .email(userDetails.getEmail())
-                .password(userDetails.getPassword())
-                .build();
+    public String logIn(LogInDto userDetails){
 
-        User user = userRepository.findByEmail(logInDetails.getEmail())
+        User user = userRepository.findByEmail(userDetails.getEmail())
                 .orElseThrow(() -> {
                     return new UserNotFoundException("User not found ", "e409");
                 });
-        if(!user.getPasswordHash().equals(logInDetails.getPassword())){
+        if(!user.getPasswordHash().equals(userDetails.getPassword())){
             throw new InvalidCredentialsException("Invalid Credentials","e401");
         }
 
-        var accessToken= jwtUtils.generateAccessToken(logInDetails.getEmail());
+        var accessToken= jwtUtils.generateAccessToken(userDetails.getEmail());
         return accessToken;
     }
 
